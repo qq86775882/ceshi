@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>自动跳转到最新URL</title>
+    <script>
+      // 页面加载完成后自动执行
+      window.onload = function () {
+        // 远程获取基础URL的API地址
+        var apiUrl =
+          'https://kaleidoscopic-toffee-7e407a.netlify.app/api_base_url.txt'
+        // 发送GET请求获取baseURL
+        fetch(apiUrl)
+          .then(function (response) {
+            if (!response.ok) throw new Error('网络请求失败')
+            return response.text()
+          })
+          .then(function (baseURL) {
+            // 拼接/public/index.html，得到最新完整URL
+            var latestUrl = baseURL.replace(/\/$/, '') + '/public/index.html'
+            // 跳转到最新URL
+            window.location.href = latestUrl
+          })
+          .catch(function (error) {
+            // 请求失败时提示错误
+            document.body.innerHTML =
+              '<h2>获取最新URL失败，请稍后重试。</h2><p>' + error + '</p>'
+          })
+      }
+    </script>
+  </head>
+  <body>
+    <h2>正在获取最新页面地址，请稍候...</h2>
+  </body>
+</html>
